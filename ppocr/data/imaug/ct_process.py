@@ -19,7 +19,7 @@ import pyclipper
 import paddle
 
 import numpy as np
-import Polygon as plg
+# import Polygon as plg
 import scipy.io as scio
 
 from PIL import Image
@@ -54,7 +54,8 @@ class RandomScale():
         data['scale_factor'] = (factor_w, factor_h)
         data['image'] = img
         return data
-
+def _getArea(box):
+    return (box[2] - box[0]) * (box[3] - box[1])
 
 class MakeShrink():
     def __init__(self, kernel_scale=0.7, **kwargs):
@@ -73,7 +74,8 @@ class MakeShrink():
         rate = rate * rate
         shrinked_bboxes = []
         for bbox in bboxes:
-            area = plg.Polygon(bbox).area()
+            # area = plg.Polygon(bbox).area()
+            area = _getArea(bbox)
             peri = self.perimeter(bbox)
 
             try:
