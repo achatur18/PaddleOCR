@@ -20,7 +20,7 @@ import numpy as np
 from paddle import nn
 import paddle
 import paddle.nn.functional as F
-from functools import partial
+from functools_ import partial
 
 
 def multi_apply(func, *args, **kwargs):
