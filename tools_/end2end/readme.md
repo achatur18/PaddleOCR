@@ -1,17 +1,17 @@
 
 # 简介
 
-`tools/end2end`目录下存放了文本检测+文本识别pipeline串联预测的指标评测代码以及可视化工具。本节介绍文本检测+文本识别的端对端指标评估方式。
+`tools_/end2end`目录下存放了文本检测+文本识别pipeline串联预测的指标评测代码以及可视化工具。本节介绍文本检测+文本识别的端对端指标评估方式。
 
 
 ## 端对端评测步骤
 
 **步骤一：**
 
-运行`tools/infer/predict_system.py`，得到保存的结果:
+运行`tools_/infer/predict_system.py`，得到保存的结果:
 
 ```
-python3 tools/infer/predict_system.py  --det_model_dir=./ch_PP-OCRv2_det_infer/ --rec_model_dir=./ch_PP-OCRv2_rec_infer/  --image_dir=./datasets/img_dir/ --draw_img_save_dir=./ch_PP-OCRv2_results/ --is_visualize=True
+python3 tools_/infer/predict_system.py  --det_model_dir=./ch_PP-OCRv2_det_infer/ --rec_model_dir=./ch_PP-OCRv2_rec_infer/  --image_dir=./datasets/img_dir/ --draw_img_save_dir=./ch_PP-OCRv2_results/ --is_visualize=True
 ```
 
 文本检测识别可视化图默认保存在`./ch_PP-OCRv2_results/`目录下，预测结果默认保存在`./ch_PP-OCRv2_results/system_results.txt`中，格式如下：
@@ -24,12 +24,12 @@ all-sum-510/00224225.jpg        [{"transcription": "超赞", "points": [[8.0, 48
 
 将步骤一保存的数据转换为端对端评测需要的数据格式：
 
-修改 `tools/end2end/convert_ppocr_label.py`中的代码，convert_label函数中设置输入标签路径，Mode，保存标签路径等，对预测数据的GTlabel和预测结果的label格式进行转换。
+修改 `tools_/end2end/convert_ppocr_label.py`中的代码，convert_label函数中设置输入标签路径，Mode，保存标签路径等，对预测数据的GTlabel和预测结果的label格式进行转换。
 
 ```
-python3 tools/end2end/convert_ppocr_label.py --mode=gt --label_path=path/to/label_txt --save_folder=save_gt_label
+python3 tools_/end2end/convert_ppocr_label.py --mode=gt --label_path=path/to/label_txt --save_folder=save_gt_label
 
-python3 tools/end2end/convert_ppocr_label.py --mode=pred --label_path=path/to/pred_txt --save_folder=save_PPOCRV2_infer
+python3 tools_/end2end/convert_ppocr_label.py --mode=pred --label_path=path/to/pred_txt --save_folder=save_PPOCRV2_infer
 ```
 
 得到如下结果：
@@ -40,16 +40,16 @@ python3 tools/end2end/convert_ppocr_label.py --mode=pred --label_path=path/to/pr
 
 **步骤三：**
 
-执行端对端评测，运行`tools/eval_end2end.py`计算端对端指标，运行方式如下：
+执行端对端评测，运行`tools_/eval_end2end.py`计算端对端指标，运行方式如下：
 
 ```
-python3 tools/eval_end2end.py "gt_label_dir"  "predict_label_dir"
+python3 tools_/eval_end2end.py "gt_label_dir"  "predict_label_dir"
 ```
 
 比如：
 
 ```
-python3 tools/eval_end2end.py ./save_gt_label/ ./save_PPOCRV2_infer/
+python3 tools_/eval_end2end.py ./save_gt_label/ ./save_PPOCRV2_infer/
 ```
 将得到如下结果，fmeasure为主要关注的指标：
 ```
